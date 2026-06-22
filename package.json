@@ -1,0 +1,23 @@
+{
+  "name": "gai-browser",
+  "version": "1.0.0",
+  "description": "GAI — a small, fast desktop browser with tabs, a customizable new-tab page, and real downloads.",
+  "main": "src/main/main.js",
+  "author": "gabrieltodua",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "icons": "node scripts/build-icons.js",
+    "dist": "electron-builder",
+    "dist:mac": "electron-builder --mac",
+    "dist:win": "electron-builder --win",
+    "release": "electron-builder --publish always"
+  },
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-builder": "^25.1.8",
+    "png2icons": "^2.0.1",
+    "sharp": "^0.33.5"
+  }
+}

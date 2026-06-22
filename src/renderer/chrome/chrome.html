@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' gai:; img-src 'self' gai: https: data:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self' gai:;" />
+<title>GAI</title>
+<link rel="stylesheet" href="chrome.css" />
+<script src="platform-flag.js"></script>
+</head>
+<body>
+<div id="app">
+
+  <header id="tabstrip-row">
+    <div class="traffic-light-spacer no-drag"></div>
+    <div id="tabstrip" class="drag" role="tablist"></div>
+    <button id="new-tab-btn" class="icon-btn no-drag" title="New tab (&#8984;T)" aria-label="New tab">
+      <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+    <div class="tabstrip-drag-filler drag"></div>
+    <div class="overlay-spacer"></div>
+  </header>
+
+  <div id="toolbar-row">
+    <button id="back-btn" class="icon-btn" disabled title="Back" aria-label="Back">
+      <svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+    </button>
+    <button id="forward-btn" class="icon-btn" disabled title="Forward" aria-label="Forward">
+      <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+    </button>
+    <button id="reload-btn" class="icon-btn" title="Reload" aria-label="Reload">
+      <svg class="icon-reload" viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 13.66-5.66M20 12a8 8 0 0 1-13.66 5.66M4 4v5h5M20 20v-5h-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+      <svg class="icon-stop" viewBox="0 0 24 24"><path d="M6 6h12v12H6z" stroke="currentColor" stroke-width="1.8" fill="none"/></svg>
+    </button>
+
+    <form id="omnibox-form" autocomplete="off">
+      <div id="omnibox-wrap">
+        <svg class="omni-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <input id="omnibox" type="text" placeholder="Search GAI or type a URL" spellcheck="false" />
+      </div>
+    </form>
+
+    <button id="downloads-btn" class="icon-btn" title="Downloads" aria-label="Downloads">
+      <svg viewBox="0 0 24 24"><path d="M12 4v11m0 0l-4-4m4 4l4-4M5 19h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+      <span id="downloads-dot" class="dot hidden"></span>
+    </button>
+  </div>
+
+  <main id="body-area">
+
+    <section id="newtab-page">
+      <div class="newtab-inner">
+        <h1 id="wordmark">GAI</h1>
+        <form id="search-form" autocomplete="off">
+          <div class="search-pill">
+            <svg class="search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            <input id="search-input" type="text" placeholder="Search GAI or the web" spellcheck="false" />
+          </div>
+        </form>
+        <div id="shortcuts-grid"></div>
+      </div>
+
+      <button id="customize-btn" title="Customize" aria-label="Customize this page">
+        <svg viewBox="0 0 24 24"><path d="M3 21l1.6-5.6L16.4 3.6a2 2 0 0 1 2.8 0l1.2 1.2a2 2 0 0 1 0 2.8L8.6 19.4 3 21z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" fill="none"/><path d="M14 6l4 4" stroke="currentColor" stroke-width="1.7"/></svg>
+      </button>
+    </section>
+
+    <div id="downloads-panel" class="panel hidden" role="dialog" aria-label="Downloads">
+      <div class="panel-title">Downloads</div>
+      <div id="downloads-list" class="downloads-list"></div>
+      <div id="downloads-empty" class="downloads-empty">No downloads yet</div>
+    </div>
+
+    <div id="customize-panel" class="panel hidden" role="dialog" aria-label="Customize">
+      <div class="panel-title">Customize</div>
+
+      <div class="panel-group">
+        <div class="panel-label">Appearance</div>
+        <div class="mode-switch">
+          <button class="mode-btn" data-mode="light">Light</button>
+          <button class="mode-btn" data-mode="dark">Dark</button>
+        </div>
+      </div>
+
+      <div class="panel-group">
+        <div class="panel-label">Accent</div>
+        <div id="accent-swatches" class="swatches"></div>
+      </div>
+
+      <div class="panel-group">
+        <div class="panel-label">Background</div>
+        <div class="bg-actions">
+          <button id="bg-default-btn" class="chip-btn">Default</button>
+          <button id="bg-color-btn" class="chip-btn">Solid color</button>
+          <button id="bg-image-btn" class="chip-btn">Upload image&hellip;</button>
+        </div>
+        <input id="bg-color-input" type="color" class="hidden-color-input" />
+      </div>
+    </div>
+
+    <div id="shortcut-modal" class="modal-overlay hidden">
+      <div class="modal">
+        <div class="modal-title">Add shortcut</div>
+        <label class="modal-field">
+          <span>Name</span>
+          <input id="shortcut-name" type="text" placeholder="e.g. Notion" />
+        </label>
+        <label class="modal-field">
+          <span>URL</span>
+          <input id="shortcut-url" type="text" placeholder="e.g. notion.so" />
+        </label>
+        <div class="modal-actions">
+          <button id="shortcut-cancel" class="chip-btn">Cancel</button>
+          <button id="shortcut-save" class="chip-btn primary">Add</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <div id="toast-area"></div>
+
+</div>
+<script src="chrome.js"></script>
+</body>
+</html>
